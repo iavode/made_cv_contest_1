@@ -25,11 +25,13 @@
 
 
 *cmd:*
-*python hack_train.py -b 32 -e 10 -lr 3e-4 -d "" -n "resnext50_32x4d_b_32_e_10" --gpu*
+* *python hack_train.py -b 32 -e 10 -lr 3e-4 -d "" -n "resnext50_32x4d_b_32_e_10" --gpu*
+
 *cmd* для первого дообучения:
-*python hack_train.py -b 32 -e 6 -lr 3e-5 -d "" -n "resnext50_32x4d_b_32_e_10+6" --gpu -pm "resnext50_32x4d_b_32_e_10_best.pth"*
+* *python hack_train.py -b 32 -e 6 -lr 3e-5 -d "" -n "resnext50_32x4d_b_32_e_10+6" --gpu -pm "resnext50_32x4d_b_32_e_10_best.pth"*
+
 *cmd* для второго дообучения:
-*python hack_train.py -b 32 -e 6 -lr 3e-5 -d "" -n "resnext50_32x4d_b_32_e_10+6+6" --gpu -pm "resnext50_32x4d_b_32_e_10+6_best.pth"*
+* *python hack_train.py -b 32 -e 6 -lr 3e-5 -d "" -n "resnext50_32x4d_b_32_e_10+6+6" --gpu -pm "resnext50_32x4d_b_32_e_10+6_best.pth"*
 
 ИД, должны лежать в папке с файлами python.
 
