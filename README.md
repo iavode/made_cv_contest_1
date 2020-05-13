@@ -1,5 +1,5 @@
 # MADE CV CONTEST 1
-Описание решения, которое получило лучший *score* на *kaggle*.
+# Описание решения, которое получило лучший *score* на *kaggle*.
 
 Обучение проводилось локально. В качестве рабочей машины использовался:
   * *Acer Nitro 5 Intel i5-9300H 2.40GHz 8GB Ram NVIDIA GeForce GTX 1650 4GB*.
@@ -18,8 +18,6 @@
 В качестве основного оптимизатора был выбран *AdamW()*, с параметром *weight_declay*=0.05.
 
 
-
-
 *cmd:*
 *python hack_train.py -b 32 -e 10 -lr 3e-4 -d "" -n "resnext50_32x4d_b_32_e_10" --gpu*
 *cmd* для первого дообучения:
@@ -27,7 +25,7 @@
 *cmd* для второго дообучения:
 *python hack_train.py -b 32 -e 6 -lr 3e-5 -d "" -n "resnext50_32x4d_b_32_e_10+6+6" --gpu -pm "resnext50_32x4d_b_32_e_10+6_best.pth"*
 
-#ИД, должны лежать в папке с файлами python.#
+ИД, должны лежать в папке с файлами python.
 
 Луший *score* и *leaderboad*:
 ![](score.png)
