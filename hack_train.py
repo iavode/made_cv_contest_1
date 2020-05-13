@@ -116,21 +116,21 @@ def main(args):
     print("Creating model...")
     model = models.resnext50_32x4d(pretrained=True)
     in_features = model.fc.in_features
-     fc = nn.Sequential(
-         nn.Linear(in_features, 2 * NUM_PTS),) # новая "голова"
-     model.fc = fc
-     state_dict = None
-     #  если есть сеть дообученная на датасете из контеста
-     if args.pretrained_model:
-         print(f"Load best_state_dict {args.pretrained_model}")
-         state_dict = torch.load(args.pretrained_model)
-         model.load_state_dict(state_dict)
-         del state_dict
+    fc = nn.Sequential(
+            nn.Linear(in_features, 2 * NUM_PTS),) # новая "голова"
+    model.fc = fc
+    state_dict = None
+    #  если есть сеть дообученная на датасете из контеста
+    if args.pretrained_model:
+        print(f"Load best_state_dict {args.pretrained_model}")
+        state_dict = torch.load(args.pretrained_model)
+        model.load_state_dict(state_dict)
+        del state_dict
 
     model.to(device)
     print(model)
 
-    factor = 0.1**(1/2)
+    factor = 0.1**(1/2) # уменьшающий фактор для lr
     # оптимизатора выбран AdamW, с небольшой нормализацией весов
     optimizer = optim.AdamW(
         model.parameters(), lr=args.learning_rate,
@@ -147,44 +147,44 @@ def main(args):
     print(scheduler)
 
 
-     print("Reading data...")
-     print("Read train landmark dataset")
-     train_dataset = ThousandLandmarksDataset(
-         os.path.join(args.data, 'train'), train_transforms, split="train")
-     print("Create picture loader for test dataset")
-     train_dataloader = data.DataLoader(
-         train_dataset, batch_size=args.batch_size,
-         num_workers=0, pin_memory=True,
-         shuffle=True, drop_last=True)
-     print("Read val landmark dataset")
-     val_dataset = ThousandLandmarksDataset(
-         os.path.join(args.data, 'train'),
-         train_transforms, split="val"
-     )
-     print("Create picture loader for val dataset")
-     val_dataloader = data.DataLoader(
-         val_dataset, batch_size=args.batch_size,
-         num_workers=0, pin_memory=True,
-         shuffle=False, drop_last=False
-     )
+    print("Reading data...")
+    print("Read train landmark dataset")
+    train_dataset = ThousandLandmarksDataset(
+            os.path.join(args.data, 'train'), train_transforms, split="train")
+    print("Create picture loader for test dataset")
+    train_dataloader = data.DataLoader(
+        train_dataset, batch_size=args.batch_size,
+        num_workers=0, pin_memory=True,
+        shuffle=True, drop_last=True)
+    print("Read val landmark dataset")
+    val_dataset = ThousandLandmarksDataset(
+        os.path.join(args.data, 'train'),
+        train_transforms, split="val"
+    )
+    print("Create picture loader for val dataset")
+    val_dataloader = data.DataLoader(
+        val_dataset, batch_size=args.batch_size,
+        num_workers=0, pin_memory=True,
+        shuffle=False, drop_last=False
+        )
 
-     # 2. train & validate
-     print("Ready for training...")
-     best_val_loss = np.inf
-     for epoch in range(args.epochs):
-         train_loss = train(
-             model, train_dataloader, loss_fn, optimizer, device=device)
-         val_loss = validate(
-             model, val_dataloader, loss_fn, device=device)
-         print(
-             "Epoch #{:2}:\ttrain loss: {:5.5}\tval loss: {:5.5}".format(
-                 epoch + 1, train_loss, val_loss)
-         )
-         scheduler.step(val_loss)
-         if val_loss < best_val_loss:
-             best_val_loss = val_loss
-             with open(f"{args.name}_best.pth", "wb") as fp:
-                 torch.save(model.state_dict(), fp)
+    # 2. train & validate
+    print("Ready for training...")
+    best_val_loss = np.inf
+    for epoch in range(args.epochs):
+        train_loss = train(
+                model, train_dataloader, loss_fn, optimizer, device=device)
+        val_loss = validate(
+                model, val_dataloader, loss_fn, device=device)
+        print(
+            "Epoch #{:2}:\ttrain loss: {:5.5}\tval loss: {:5.5}".format(
+                epoch + 1, train_loss, val_loss)
+        )
+        scheduler.step(val_loss)
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            with open(f"{args.name}_best.pth", "wb") as fp:
+                torch.save(model.state_dict(), fp)
 
     # 3. predict
     print("Start predict")
