@@ -98,13 +98,11 @@ class ThousandLandmarksDataset(data.Dataset):
             for i, line in enumerate(fp):
                 if i == 0:
                     continue  # skip header
-                if split == "train" and i == int(TRAIN_SIZE * num_lines):
-                    if(not ((i + 1) % 35000)):
+                if(not ((i + 1) % 35000)):
                         print(f"{i+1} lines preprocess.")
+                if split == "train" and i == int(TRAIN_SIZE * num_lines):
                     break  # reached end of train part of data
                 elif split == "val" and i < int(TRAIN_SIZE * num_lines):
-                    if(not ((i + 1) % 35000)):
-                        print(f"{i+1} lines preprocess.")
                     continue  # has not reached start of val part of data
                 elements = line.strip().split("\t")
                 image_name = os.path.join(images_root, elements[0])
