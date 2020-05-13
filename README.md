@@ -15,4 +15,4 @@ cmd:
 
 
 Луший score и leaderboad:
-(score.png)
+[](score.png)
